@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    {% include 'meta.html' %}
+    <title>ToDo APP</title>
+    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+        <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+        <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+	<script src="static/index.js"></script>
+</head>
+
+
+<body>
+    
+    <section class="vh-100" style="background-color: #eee;">
+        <div class="container py-5 h-100">
+            <div class="row d-flex justify-content-center align-items-center h-100">
+                <div class="col col-lg-9 col-xl-7">
+                    <div class="card rounded-3">
+                        <div class="card-body p-4">
+
+				<h4 class="text-center my-3 pb-3"><a href="/">To Do App</a></h4>
+
+                            <form action="/save" method="post"
+                                class="row row-cols-lg-auto g-3 justify-content-center align-items-center mb-4 pb-2">
+                                <div class="col-12">
+                                    <div class="form-outline">
+                                        <input type="text" name="item" id="form1" class="form-control"
+                                            placeholder="Enter task here" />
+                                    </div>
+                                </div>
+
+                                <div class="col-12">
+                                    <button type="submit" class="btn btn-primary">Save</button>
+                                </div>
+                            </form>
+
+                            <table class="table mb-4">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">No.</th>
+                                        <th scope="col">Todo item</th>
+                                        <th scope="col">Status</th>
+                                        <th scope="col">Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for item in items %}
+                                    <tr>
+                                        <th scope="row">{{loop.index}}</th>
+                                        {% if item.status.value == "finished" %}
+                                        <td><s>{{item.description}}</s></td>
+                                        {% else %}
+                                        <td>{{item.description}}</td>
+                                        {% endif %}
+                                        <td>{{item.status.value}}</td>
+                                        <td class="d-flex">
+                                            <form class="w-50" action="/delete" method="post">
+                                                <input type="hidden" name="itemId" value="{{item.id}}">
+                                                <button type="submit" class="btn btn-danger">Delete</button>
+                                            </form>
+                                            <form class="w-50" action="{% if item.status.value == 'open' %}/start{% else %}/finish{% endif %}" method="post">
+                                                <input type="hidden" name="itemId" value="{{ item.id }}">
+                                                {% if item.status.value == "open" %}
+                                                    <button type="submit" class="btn btn-success ms-1">Start</button>
+                                                {% elif item.status.value == "in progress" %}
+                                                    <button type="submit" class="btn btn-warning ms-1">Finish</button>
+                                                {% elif item.status.value == "finished" %}
+                                                    <button class="disabled btn btn-secondary ms-1">Finished</button>
+                                                {% endif %}
+                                            </form>
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+
+                                </tbody>
+                            </table>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+        crossorigin="anonymous"></script>
+
+        <footer id="dk-footer" class="dk-footer" >
+            <div class="contact-info" >
+                <h2>Mitwirkende</h2>
+                <p>Talha Sahin, Boris König, Ahmad al Ibrahim, Tim Niggemann, Heinrich Klink, Ons Ben Youssef, Felix Ixkes</p>
+            </div>
+</footer>
+
+</body>
+
+</html>
